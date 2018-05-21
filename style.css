@@ -1,0 +1,47 @@
+#map {
+    width: 600px;
+    height: 675px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.wall {
+    width: 75px;
+    height: 75px;
+    background-image: url(bricks.png);
+}
+
+.floor {
+    width: 75px;
+    height: 75px;
+    background-image: url(floor.jpg);
+}
+
+.peanut {
+    width: 75px;
+    height: 75px;
+    background-image: url(peanut.png);
+}
+
+.emptystorage {
+    width: 75px;
+    height: 75px;
+    background-image: url(floordot.jpg);
+}
+
+.sandwich {
+    width: 75px;
+    height: 75px;
+    background-image: url(pbj.jpg);
+}
+
+#playa {
+    width: 75px;
+    height: 75px;
+    background-image: url(banana.gif);
+}
