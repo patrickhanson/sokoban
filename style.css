@@ -1,3 +1,17 @@
+body {
+    background-color: rgb(255, 255, 134);
+    font-family: sans-serif;
+}
+
+#instructions {
+    max-width: 600px;
+    margin: 10px;
+}
+
+h1 {
+    margin: 10px;
+}
+
 #map {
     width: 600px;
     height: 675px;
@@ -28,7 +42,7 @@
     background-image: url(peanut.png);
 }
 
-.emptystorage {
+.storage {
     width: 75px;
     height: 75px;
     background-image: url(floordot.jpg);

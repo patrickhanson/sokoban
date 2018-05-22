@@ -14,8 +14,8 @@ const newMap = []
 let playa = undefined
 const destination = document.getElementById("map")
 const boxDestination = document.getElementById("box")
-
-
+const winDestination = document.getElementById("instructions")
+const audio = new Audio("pbjtime.m4a")
 
 for(let i = 0; i < map.length; i++) {
     let mapColumn = map[i]
@@ -49,11 +49,11 @@ for(let rowIndex = 0; rowIndex < newMap.length; rowIndex++) {
             cell.classList.add("floor")
             addBox(cell)
         } else if(mapRow[colIndex] === "O") {
-            cell.dataset.type = "emptystorage"
-            cell.classList.add("emptystorage")
+            cell.dataset.type = "storage"
+            cell.classList.add("storage")
         } else if(mapRow[colIndex] === "X") {
-            cell.dataset.type = "emptystorage"
-            cell.classList.add("emptystorage")
+            cell.dataset.type = "storage"
+            cell.classList.add("storage")
             addFullBox(cell)
         }
         rowDiv.appendChild(cell)
@@ -93,6 +93,16 @@ function findNextCell (cell, rowOffset, columnOffset) {
     return targetCell
 }
 
+function checkWin() {
+    let sw = document.querySelectorAll(".sandwich").length
+    if(sw === 7) {
+        winDestination.textContent = "THERE YOU GO! YOU WIN!!!!"
+        winDestination.style.fontSize = "40px"
+        winDestination.style.color = "red"
+        audio.play()
+    }
+}
+
 document.addEventListener('keydown', (event) => {
     let targetCell
     let followingCell
@@ -111,33 +121,43 @@ document.addEventListener('keydown', (event) => {
         followingCell = findNextCell(targetCell, 0, -1)
     }
     
+    const targetHasBox = targetCell.childElementCount > 0
+    const followingHasBox = followingCell.childElementCount > 0
+
 
     if(targetCell.className === "cell floor") {
-        if(targetCell.childElementCount === 0) {
+        if(!targetHasBox) {
             targetCell.appendChild(playa)
-        } else if(targetCell.childElementCount === 1) {
+        } else if(targetHasBox) {
             if(followingCell.className === "cell floor") {
                 if(followingCell.childElementCount === 0) {
                     followingCell.appendChild(targetCell.firstElementChild)
                     targetCell.appendChild(playa)
                 }
-            } else if(followingCell.className === "cell emptystorage") {
-                if(followingCell.childElementCount === 0) {
-                    followingCell.appendChild(targetCell.firstElementChild)
+            } else if(followingCell.className === "cell storage") {
+                if(!followingHasBox) {
+                    const peanut = targetCell.firstElementChild
+                    followingCell.appendChild(peanut)
+                    peanut.classList.remove("peanut")
+                    peanut.classList.add("sandwich")
                     targetCell.appendChild(playa)
                 }
             }
         }
-    } else if(targetCell.className === "cell emptystorage") {
-        if(targetCell.childElementCount === 0) {
+    } else if(targetCell.className === "cell storage") {
+        if(!targetHasBox) {
             targetCell.appendChild(playa)
-        } else if(targetCell.childElementCount === 1) {
+        } else if(targetHasBox) {
             if(followingCell.className === "cell floor") {
-                if(followingCell.childElementCount === 0) {
-                    followingCell.appendChild(targetCell.firstElementChild)
+                if(!followingHasBox) {
+                    const peanut = targetCell.firstElementChild
+                    followingCell.appendChild(peanut)
+                    peanut.classList.remove("sandwich")
+                    peanut.classList.add("peanut")
                     targetCell.appendChild(playa)
                 }
             }
         }
     }
+    checkWin()
 })
